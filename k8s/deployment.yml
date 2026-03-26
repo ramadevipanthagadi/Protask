@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: onlinebookstore-deployment
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: onlinebookstore
+
+  template:
+    metadata:
+      labels:
+        app: onlinebookstore
+
+    spec:
+      containers:
+        - name: onlinebookstore-container
+          image: sunithriyansh/onlinebookstore:latest
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: onlinebookstore-service
+
+spec:
+  type: LoadBalancer
+
+  selector:
+    app: onlinebookstore
+
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
